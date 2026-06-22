@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
 <style>
   :root{
@@ -202,8 +203,9 @@
     transition:transform .35s cubic-bezier(.21,.6,.35,1);
     box-shadow:0 12px 24px -10px rgba(26,26,26,0.15);
     padding:24px;
+    visibility:hidden;
   }
-  .mobile-menu.open{transform:translateY(0);}
+  .mobile-menu.open{transform:translateY(0);visibility:visible;}
   .mobile-menu a{
     display:block;
     padding:16px 4px;
@@ -968,13 +970,6 @@
 <body>
 
 <div id="loader"><div class="loader-plate"></div></div>
-<script>
-  // Segurança extra: se por qualquer motivo o loader não for escondido pelo script principal, força o fechamento em 1.5s
-  setTimeout(() => {
-    const l = document.getElementById('loader');
-    if (l) l.classList.add('hide');
-  }, 1500);
-</script>
 
 <!-- ===================== NAVBAR ===================== -->
 <nav class="navbar" id="navbar">
@@ -992,13 +987,13 @@
     </ul>
     <div class="nav-cta-area">
       <a href="#contato" class="btn btn-primary"><i data-lucide="shopping-bag" style="width:16px;height:16px;"></i> Peça Agora</a>
-      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu"><svg width="24" height="24" viewBox="0 0 24 24"
-     fill="none" stroke="currentColor"
-     stroke-width="2" stroke-linecap="round">
-    <line x1="3" y1="6" x2="21" y2="6"/>
-    <line x1="3" y1="12" x2="21" y2="12"/>
-    <line x1="3" y1="18" x2="21" y2="18"/>
-</svg></button>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
@@ -1425,44 +1420,61 @@
 
 <script>
 
+    // Renderiza todos os ícones Lucide (data-lucide="...") da página
+    if (window.lucide) { lucide.createIcons(); }
+
     // Loader
     document.getElementById('loader').classList.add('hide');
 
     // Navbar scroll state
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 10);
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
     });
 
-    // Hamburger menu
+    // ===== Menu mobile (hamburger) =====
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    // Ícones em SVG puro, sem depender do lucide pra essa troca (evita o bug de variável inexistente)
+    const menuIconSVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>`;
+    const closeIconSVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>`;
+
     hamburgerBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburgerBtn.innerHTML = isOpen ? closeIconSVG : menuIconSVG;
+      hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+    });
 
-    hamburgerBtn.innerHTML =
-        mobileMenu.classList.contains('open')
-            ? closeIcon
-            : menuIcon;
-});
     mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
+      a.addEventListener('click', () => {
         mobileMenu.classList.remove('open');
-        hamburgerBtn.innerHTML = '<i data-lucide="menu"></i>';
+        hamburgerBtn.innerHTML = menuIconSVG;
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+      });
     });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 6) * 60}ms`;
+      observer.observe(el);
     });
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  revealEls.forEach((el, i) => {
-    el.style.transitionDelay = `${(i % 6) * 60}ms`;
-    observer.observe(el);
-  });
 </script>
 
 </body>
