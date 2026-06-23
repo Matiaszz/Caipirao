@@ -211,6 +211,45 @@
       border-radius: 50%;
     }
 
+    .unit-selector-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--cream-deep);
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(26, 26, 26, 0.08);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-left: 14px;
+    }
+
+    .unit-select {
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      color: var(--dark);
+      cursor: pointer;
+      outline: none;
+      font-size: 0.88rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%231A1A1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right center;
+      background-size: 10px;
+      padding-right: 14px;
+    }
+
+    .unit-selector-wrapper .pin-icon {
+      width: 15px;
+      height: 15px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+
     .nav-links {
       display: flex;
       align-items: center;
@@ -767,6 +806,30 @@
     .menu-cta {
       text-align: center;
       margin-top: 48px;
+    }
+
+    .menu-extended {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .menu-extended.show {
+      display: grid !important;
+      opacity: 1;
+      animation: fadeInExtended 0.5s ease forwards;
+    }
+
+    @keyframes fadeInExtended {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ===================== PROMO BANNER ===================== */
@@ -1387,11 +1450,11 @@
       position: fixed;
       inset: 0;
       background: var(--background);
-      z-index: 9999;
+      z-index: 99999;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity .5s ease, visibility .5s ease;
+      transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s ease;
     }
 
     #loader.hide {
@@ -1399,18 +1462,103 @@
       visibility: hidden;
     }
 
-    .loader-plate {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 5px solid var(--cream-deep);
-      border-top-color: var(--primary);
-      animation: spin 0.9s linear infinite;
+    .loader-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
 
-    @keyframes spin {
+    .loader-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulseLogo 1.6s ease-in-out infinite;
+    }
+
+    .loader-logo .mark {
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--background);
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(158, 27, 27, 0.25);
+    }
+
+    .loader-logo .mark::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 2px dashed var(--secondary);
+      border-radius: 50%;
+      animation: rotateDashed 4s linear infinite;
+    }
+
+    .loader-text {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+    }
+
+    .loader-bar {
+      width: 160px;
+      height: 4px;
+      background: var(--cream-deep);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loader-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      animation: progressAnim 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      transform-origin: left;
+    }
+
+    @keyframes rotateDashed {
       to {
         transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulseLogo {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes progressAnim {
+      0% {
+        transform: translateX(-100%) scaleX(0.2);
+      }
+
+      50% {
+        transform: translateX(0%) scaleX(1);
+      }
+
+      100% {
+        transform: translateX(100%) scaleX(0.2);
       }
     }
 
@@ -1665,21 +1813,498 @@
         height: 54px;
       }
     }
+
+    /* ===================== UNIT SELECTOR TRIGGER & TRAY ===================== */
+    .unit-selector-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--cream-deep);
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(26, 26, 26, 0.08);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-left: 14px;
+      transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+      cursor: pointer;
+    }
+
+    .unit-selector-trigger:hover {
+      background: var(--white);
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(158, 27, 27, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .unit-selector-trigger .pin-icon {
+      width: 15px;
+      height: 15px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+
+    .unit-selector-trigger .chevron-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--text);
+      transition: transform 0.25s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .unit-selector-trigger[aria-expanded="true"] .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .unit-tray-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      transition: visibility 0.4s;
+    }
+
+    .unit-tray-overlay.active {
+      visibility: visible;
+      transition: none;
+    }
+
+    .unit-tray-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 20, 20, 0.65);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .unit-tray-overlay.active .unit-tray-backdrop {
+      opacity: 1;
+    }
+
+    .unit-tray-content {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      background: var(--background);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 25px 50px -12px rgba(26, 26, 26, 0.35);
+      z-index: 10;
+      opacity: 0;
+      transform: scale(0.96) translateY(12px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 3px solid var(--cream-deep);
+      overflow: hidden;
+      will-change: transform, opacity;
+    }
+
+    /* Elegant dashed border detail inside the tray matching the logo */
+    .unit-tray-content::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 2px dashed var(--secondary);
+      border-radius: 22px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .unit-tray-overlay.active .unit-tray-content {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .unit-tray-handle {
+      display: none;
+      width: 40px;
+      height: 4px;
+      background: rgba(26, 26, 26, 0.15);
+      border-radius: 2px;
+      margin: -10px auto 20px;
+    }
+
+    .unit-tray-header {
+      position: relative;
+      margin-bottom: 28px;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .unit-tray-header h3 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .tray-title-icon {
+      color: var(--primary);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
+
+    .unit-tray-header p {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .unit-tray-close {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--cream-deep);
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .unit-tray-close:hover {
+      background: var(--primary);
+      color: var(--white);
+      transform: rotate(90deg);
+    }
+
+    .unit-tray-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .unit-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      background: var(--white);
+      border: 2px solid rgba(26, 26, 26, 0.05);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
+    }
+
+    .unit-card::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed transparent;
+      border-radius: 14px;
+      transition: border-color 0.25s ease;
+    }
+
+    .unit-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--secondary);
+      box-shadow: var(--shadow-card);
+    }
+
+    .unit-card:hover::before {
+      border-color: rgba(217, 119, 6, 0.3);
+    }
+
+    .unit-card.active {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 8px 24px rgba(158, 27, 27, 0.08);
+    }
+
+    .unit-card.active::before {
+      border-color: rgba(158, 27, 27, 0.4);
+    }
+
+    .unit-card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--cream-deep);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .unit-card:hover .unit-card-icon {
+      background: var(--secondary);
+      color: var(--white);
+    }
+
+    .unit-card.active .unit-card-icon {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .unit-card-info {
+      flex-grow: 1;
+    }
+
+    .unit-card-info h4 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .unit-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--cream-deep);
+      color: var(--dark);
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+
+    .unit-card.active .unit-badge {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .unit-address {
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .unit-hours {
+      font-size: 0.78rem;
+      color: var(--text);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .unit-hours i {
+      width: 12px;
+      height: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .unit-card-select-indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(26, 26, 26, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .unit-card.active .unit-card-select-indicator {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .unit-card-select-indicator i {
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .unit-tray-footer {
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 600;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-top: 1px solid rgba(26, 26, 26, 0.08);
+      padding-top: 20px;
+    }
+
+    .unit-tray-footer i {
+      width: 16px;
+      height: 16px;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+    }
+
+    /* Transition classes for dynamic updates */
+    .fade-updating {
+      opacity: 0 !important;
+      transform: translateY(4px) !important;
+    }
+
+    .fade-transitionable {
+      transition: opacity 0.25s cubic-bezier(0.25, 1, 0.5, 1), transform 0.25s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+
+    /* Bottom Sheet on Mobile */
+    @media (max-width: 576px) {
+      .unit-tray-overlay {
+        align-items: flex-end;
+      }
+
+      .unit-tray-content {
+        max-width: 100%;
+        border-radius: 32px 32px 0 0;
+        opacity: 1;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 30px 24px 40px;
+        border-width: 3px 0 0 0;
+        will-change: transform;
+      }
+
+      .unit-tray-content::after {
+        border-radius: 26px 26px 0 0;
+        inset: 6px 6px 0 6px;
+      }
+
+      .unit-tray-overlay.active .unit-tray-content {
+        transform: translateY(0);
+      }
+
+      .unit-tray-handle {
+        display: block;
+      }
+
+      .unit-tray-close {
+        top: 16px;
+        right: 16px;
+      }
+
+      .instagram-link {
+        color: #fff;
+        transition: color .3s ease;
+      }
+
+      .instagram-link:hover {
+        color: #9E1B1B;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <div id="loader">
-    <div class="loader-plate"></div>
+    <div class="loader-content">
+      <div class="loader-logo">
+        <span class="mark"><i data-lucide="soup"></i></span>
+      </div>
+      <div class="loader-text">Preparando sabor caseiro...</div>
+      <div class="loader-bar">
+        <div class="loader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== UNIT SELECTOR TRAY ===================== -->
+  <div id="unitSelectorTray" class="unit-tray-overlay" role="dialog" aria-modal="true" aria-labelledby="trayTitle">
+    <div class="unit-tray-backdrop" id="unitTrayBackdrop"></div>
+    <div class="unit-tray-content">
+      <div class="unit-tray-handle"></div>
+
+      <div class="unit-tray-header">
+        <h3 id="trayTitle"><i data-lucide="soup" class="tray-title-icon"></i> Escolha sua Unidade</h3>
+        <p>Selecione onde deseja pedir seu sabor caseiro:</p>
+        <button class="unit-tray-close" id="unitTrayCloseBtn" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="unit-tray-body">
+        <button class="unit-card active" data-unit="salto">
+          <div class="unit-card-icon">
+            <i data-lucide="map-pin"></i>
+          </div>
+          <div class="unit-card-info">
+            <h4>Salto <span class="unit-badge">Centro</span></h4>
+            <p class="unit-address">Av. Dom Pedro II, 12</p>
+            <p class="unit-hours"><i data-lucide="clock"></i> Ter a Dom · 11h-15h / 18h-22h</p>
+          </div>
+          <div class="unit-card-select-indicator">
+            <i data-lucide="check"></i>
+          </div>
+        </button>
+
+        <button class="unit-card" data-unit="indaiatuba">
+          <div class="unit-card-icon">
+            <i data-lucide="map-pin"></i>
+          </div>
+          <div class="unit-card-info">
+            <h4>Indaiatuba <span class="unit-badge">Vila Homero</span></h4>
+            <p class="unit-address">Rua Martha Camargo Ifanger, 18</p>
+            <p class="unit-hours"><i data-lucide="clock"></i> Ter a Dom · 11h-15h / 18h-22h</p>
+          </div>
+          <div class="unit-card-select-indicator">
+            <i data-lucide="check"></i>
+          </div>
+        </button>
+
+        <button class="unit-card" data-unit="campinas">
+          <div class="unit-card-icon">
+            <i data-lucide="map-pin"></i>
+          </div>
+          <div class="unit-card-info">
+            <h4>Campinas <span class="unit-badge">Centro</span></h4>
+            <p class="unit-address">Av. Francisco Glicério, 1234</p>
+            <p class="unit-hours"><i data-lucide="clock"></i> Ter a Dom · 11h-15h / 18h-22h</p>
+          </div>
+          <div class="unit-card-select-indicator">
+            <i data-lucide="check"></i>
+          </div>
+        </button>
+      </div>
+
+      <div class="unit-tray-footer">
+        <i data-lucide="truck"></i> Entrega rápida em todas as regiões atendidas.
+      </div>
+    </div>
   </div>
 
   <!-- ===================== NAVBAR ===================== -->
   <nav class="navbar" id="navbar">
     <div class="container nav-inner">
-      <a href="#home" class="logo">
-        <img src="img/caipirao_logo.jpg" alt="Caipirão">
-      </a>
+      <div style="display: flex; align-items: center;">
+        <a href="#home" class="logo">
+          <span class="mark"><i data-lucide="soup"></i></span>
+          Caipirão
+        </a>
+        <button id="unitSelectorTrigger" class="unit-selector-trigger" aria-haspopup="dialog" aria-expanded="false">
+          <i data-lucide="map-pin" class="pin-icon"></i>
+          <span id="selectedUnitLabel">Salto (Centro)</span>
+          <i data-lucide="chevron-down" class="chevron-icon"></i>
+        </button>
+      </div>
       <ul class="nav-links">
         <li><a href="#home" class="active">Home</a></li>
         <li><a href="#cardapio">Cardápio</a></li>
@@ -1749,14 +2374,14 @@
       <div class="info-item reveal">
         <span class="icon-circle"><i data-lucide="clock"></i></span>
         <div>
-          <div class="value">Seg a Dom · 11h-22h</div>
+          <div class="value" id="infoHours">Seg a Dom · 11h-22h</div>
           <div class="label">Horário de funcionamento</div>
         </div>
       </div>
       <div class="info-item reveal">
         <span class="icon-circle"><i data-lucide="map-pin"></i></span>
         <div>
-          <div class="value">Centro — Salto/SP</div>
+          <div class="value" id="infoLocal">Centro — Salto/SP</div>
           <div class="label">Nossa localização</div>
         </div>
       </div>
@@ -1770,7 +2395,7 @@
       <div class="info-item reveal">
         <span class="icon-circle"><i data-lucide="phone"></i></span>
         <div>
-          <div class="value">(11) 4029-7707</div>
+          <div class="value" id="infoPhone">(11) 4029-7707</div>
           <div class="label">WhatsApp</div>
         </div>
       </div>
@@ -1796,7 +2421,14 @@
           </div>
         </div>
         <div class="score-card ifood">
-          <span class="platform-icon"><i data-lucide="utensils-crossed" style="width:24px;height:24px;"></i></span>
+          <span class="platform-icon"
+            style="background: #ea1d2c; display: flex; align-items: center; justify-content: center; padding: 4px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
+              <path d="M6 16c1 5 6 9 10 9s9-4 10-9" stroke="white" stroke-width="3" stroke-linecap="round"
+                fill="none" />
+              <circle cx="25" cy="11" r="3" fill="white" />
+            </svg>
+          </span>
           <div>
             <div class="score">4,9</div>
             <div class="stars">★★★★★</div>
@@ -1853,87 +2485,144 @@
       </div>
 
       <div class="menu-grid">
+        <!-- MARMITA DE PARMEGIANA -->
         <div class="dish-card reveal">
           <span class="badge-tag">Mais pedido</span>
-          <img class="dish-img" src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&q=80"
-            alt="Frango assado dourado">
+          <img class="dish-img" src="img/parmegiana.png" alt="Marmita de Parmegiana">
           <div class="dish-body">
-            <h3>Frango Assado</h3>
-            <p class="desc">Frango temperado e assado lentamente, acompanhado de arroz e farofa.</p>
+            <h3>Marmita de Parmegiana</h3>
+            <p class="desc">Filé à parmegiana suculento, acompanhado de arroz branco, feijão caseiro e batatas fritas.
+            </p>
             <div class="dish-footer">
-              <span class="price-tag">R$ 28</span>
+              <span class="price-tag">R$ 55</span>
               <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
                   style="width:14px;height:14px;"></i></a>
             </div>
           </div>
         </div>
 
+        <!-- MARMITA FILÉ MIGNON GRELHADO -->
         <div class="dish-card reveal">
-          <img class="dish-img" src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80"
-            alt="Marmita executiva com arroz, feijão e carne">
+          <img class="dish-img" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80"
+            alt="Marmita de Filé Mignon Grelhado">
           <div class="dish-body">
-            <h3>Marmita Executiva</h3>
-            <p class="desc">Arroz, feijão, carne, salada e acompanhamento do dia.</p>
+            <h3>Marmita Filé Mignon Grelhado</h3>
+            <p class="desc">Filé Mignon grelhado no ponto certo, servido com arroz, feijão, farofa da casa e batatas.
+            </p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 50</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- MARMITA DE FRANGO GRELHADO -->
+        <div class="dish-card reveal">
+          <span class="badge-tag">Saudável</span>
+          <img class="dish-img" src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80"
+            alt="Marmita de Frango Grelhado">
+          <div class="dish-body">
+            <h3>Marmita de Frango Grelhado</h3>
+            <p class="desc">Filé de frango grelhado marinado, acompanhado de arroz branco e legumes na manteiga.</p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 40</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extended Menu containing more real items from Caipirão iFood -->
+      <div class="menu-grid menu-extended" id="extendedMenu">
+        <!-- ESTROGONOFE DE FILÉ MIGNON -->
+        <div class="dish-card reveal">
+          <span class="badge-tag">Clássico</span>
+          <img class="dish-img" src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=500&q=80"
+            alt="Estrogonofe de Filé Mignon">
+          <div class="dish-body">
+            <h3>Estrogonofe de Filé Mignon</h3>
+            <p class="desc">Estrogonofe de filé mignon cremoso com cogumelos, acompanhado de arroz e batata chips.</p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 52</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PICANHA GRELHADA -->
+        <div class="dish-card reveal">
+          <img class="dish-img" src="https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=500&q=80"
+            alt="Picanha Grelhada">
+          <div class="dish-body">
+            <h3>Picanha Grelhada</h3>
+            <p class="desc">Picanha grelhada suculenta na chapa, servida com arroz, feijão, farofa e batatas fritas.</p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 62</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABADEJO GRELHADO -->
+        <div class="dish-card reveal">
+          <img class="dish-img" src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=500&q=80"
+            alt="Abadejo Grelhado">
+          <div class="dish-body">
+            <h3>Abadejo Grelhado</h3>
+            <p class="desc">Filé de abadejo grelhado ao molho de ervas finas, servido com arroz e pirão de peixe.</p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 56</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILÉ À MODA DA CASA -->
+        <div class="dish-card reveal">
+          <span class="badge-tag">Especialidade</span>
+          <img class="dish-img" src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=500&q=80"
+            alt="Filé à Moda da Casa">
+          <div class="dish-body">
+            <h3>Filé à Moda da Casa</h3>
+            <p class="desc">Filé mignon grelhado com bacon, servido com batata gomo, ervilha, cebola e palmito.</p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 58</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SALADA CAIPIRÃO -->
+        <div class="dish-card reveal">
+          <img class="dish-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80"
+            alt="Salada Caipirão">
+          <div class="dish-body">
+            <h3>Salada Caipirão</h3>
+            <p class="desc">Mix refrescante de alface, tomate cereja, palmito, cebola roxa, cenoura ralada e azeitonas.
+            </p>
+            <div class="dish-footer">
+              <span class="price-tag">R$ 30</span>
+              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
+                  style="width:14px;height:14px;"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PETIT GATEAU -->
+        <div class="dish-card reveal">
+          <img class="dish-img" src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80"
+            alt="Petit Gateau">
+          <div class="dish-body">
+            <h3>Petit Gateau</h3>
+            <p class="desc">Bolo quente de chocolate com recheio cremoso, acompanhado de sorvete de creme.</p>
             <div class="dish-footer">
               <span class="price-tag">R$ 22</span>
-              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
-                  style="width:14px;height:14px;"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="dish-card reveal">
-          <span class="badge-tag">Fim de semana</span>
-          <img class="dish-img" src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&q=80"
-            alt="Feijoada completa com acompanhamentos">
-          <div class="dish-body">
-            <h3>Feijoada</h3>
-            <p class="desc">Feijoada completa com couve, farofa, arroz e laranja.</p>
-            <div class="dish-footer">
-              <span class="price-tag">R$ 32</span>
-              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
-                  style="width:14px;height:14px;"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="dish-card reveal">
-          <img class="dish-img" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80"
-            alt="Prato do dia variado">
-          <div class="dish-body">
-            <h3>Prato do Dia</h3>
-            <p class="desc">Sugestão especial do chef, sempre fresquinha e diferente.</p>
-            <div class="dish-footer">
-              <span class="price-tag">R$ 24</span>
-              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
-                  style="width:14px;height:14px;"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="dish-card reveal">
-          <span class="badge-tag">Fitness</span>
-          <img class="dish-img" src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=500&q=80"
-            alt="Marmita fitness com frango grelhado e legumes">
-          <div class="dish-body">
-            <h3>Marmita Fitness</h3>
-            <p class="desc">Frango grelhado, legumes no vapor e arroz integral.</p>
-            <div class="dish-footer">
-              <span class="price-tag">R$ 26</span>
-              <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
-                  style="width:14px;height:14px;"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="dish-card reveal">
-          <img class="dish-img" src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=500&q=80"
-            alt="Combo família com diversos pratos">
-          <div class="dish-body">
-            <h3>Combo Família</h3>
-            <p class="desc">4 marmitas + acompanhamentos, ideal pra dividir em casa.</p>
-            <div class="dish-footer">
-              <span class="price-tag">R$ 79</span>
               <a href="#contato" class="order-btn-sm">Pedir <i data-lucide="arrow-right"
                   style="width:14px;height:14px;"></i></a>
             </div>
@@ -1942,8 +2631,8 @@
       </div>
 
       <div class="menu-cta reveal">
-        <a href="#" class="btn btn-outline">Ver cardápio completo <i data-lucide="arrow-right"
-            style="width:16px;height:16px;"></i></a>
+        <button id="toggleMenuBtn" class="btn btn-outline">Ver cardápio completo <i data-lucide="chevron-down"
+            style="width:16px;height:16px; transition: transform .25s ease;"></i></button>
       </div>
     </div>
   </section>
@@ -2047,7 +2736,7 @@
           <span class="tag">Prato do dia</span>
         </div>
         <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1577106263724-2c8e03bbe516?w=400&q=80" alt="Equipe da cozinha"
+          <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=400&q=80" alt="Equipe da cozinha"
             loading="lazy">
           <span class="tag">Nossa equipe</span>
         </div>
@@ -2080,36 +2769,42 @@
       </div>
       <div class="location-grid">
         <div class="map-wrap reveal">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.0!2d-47.2867!3d-23.2007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDEyJzAyLjUiUyA0N8KwMTcnMTIuMSJX!5e0!3m2!1spt-BR!2sbr!4v1234567890"
+          <iframe id="locMapIframe"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.0125740417937!2d-47.286370423854746!3d-23.20077421876527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf50053ab5b0eb%3A0x8670bf7e3e2cd029!2sAv.%20Dom%20Pedro%20II%2C%2012%20-%20Centro%2C%20Salto%20-%20SP%2C%2013320-240!5e0!3m2!1spt-BR!2sbr!4v1719163200000"
             allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
             title="Mapa da localização do Caipirão em Salto/SP"></iframe>
         </div>
         <div class="location-info reveal">
-          <h3>Caipirão — Centro, Salto/SP</h3>
+          <h3 id="locTitle">Caipirão — Centro, Salto/SP</h3>
           <div class="loc-item">
             <span class="icon-circle"><i data-lucide="map-pin"></i></span>
             <div>
               <h4>Endereço</h4>
-              <p>Av. Dom Pedro II, 12 — Centro, Salto/SP</p>
+              <p id="locAddress">Av. Dom Pedro II, 12 — Centro, Salto/SP</p>
             </div>
           </div>
           <div class="loc-item">
             <span class="icon-circle"><i data-lucide="clock"></i></span>
             <div>
               <h4>Horário</h4>
-              <p>Segunda: Fechado<br>Terça: 11h às 15h<br>Quarta a Sexta: 11h às 15h e 18h às 22h<br>Sábado: 11h às 16h e 18h às 22h<br>Domingo: 11h às 17h</p>
+              <p id="locHours">Segunda: Fechado<br>Terça: 11h às 15h<br>Quarta a Sexta: 11h às 15h e 18h às
+                22h<br>Sábado: 11h às 16h e 18h às 22h<br>Domingo: 11h às 17h</p>
             </div>
           </div>
           <div class="loc-item">
             <span class="icon-circle"><i data-lucide="phone"></i></span>
             <div>
               <h4>WhatsApp</h4>
-              <p>(11) 4029-7707</p>
+              <p id="locPhone">(11) 4029-7707</p>
             </div>
           </div>
-          <a href="https://wa.me/551140297707" class="btn btn-primary"><i data-lucide="message-circle"
-              style="width:16px;height:16px;"></i> Falar no WhatsApp</a>
+          <a href="https://wa.me/551140297707" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.705 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            Falar no WhatsApp
+          </a>
         </div>
       </div>
     </div>
@@ -2119,8 +2814,13 @@
   <section class="final-cta">
     <div class="container">
       <h2 class="reveal">Peça agora e receba o sabor do Caipirão na sua casa.</h2>
-      <a href="https://wa.me/551140297707" class="btn btn-primary reveal"><i data-lucide="shopping-cart"
-          style="width:18px;height:18px;"></i> Fazer Pedido</a>
+      <a href="https://wa.me/551140297707" class="btn btn-primary reveal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.705 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+        Fazer Pedido
+      </a>
     </div>
   </section>
 
@@ -2133,11 +2833,33 @@
             <span class="mark"><i data-lucide="soup"></i></span>
             Caipirão
           </a>
-          <p>Comida de verdade, com tempero de casa. Marmitas e pratos executivos em Salto/SP, todos os dias.</p>
+          <p id="footerDesc">Comida de verdade, com tempero de casa. Marmitas e pratos executivos, todos os dias.</p>
           <div class="social-row">
-            <a href="https://www.instagram.com/restaurantecaipiraooficial/" target="_blank" aria-label="Instagram"><i data-lucide="link" style="width:18px;height:18px;"></i></a>
-            <a href="https://wa.me/551140297707" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle" style="width:18px;height:18px;"></i></a>
-            <a href="https://www.ifood.com.br/delivery/salto-sp/restaurante-caipirao-salto-centro/1bdcdcd2-3217-4611-88c1-5c55a49a6837" target="_blank" aria-label="iFood"><i data-lucide="utensils-crossed" style="width:18px;height:18px;"></i></a>
+            <a href="https://www.instagram.com/restaurantecaipiraooficial/" target="_blank" aria-label="Instagram"
+              class="instagram-link">
+
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor">
+                <g>
+                  <path
+                    d="M22.3,8.4c-0.8,0-1.4,0.6-1.4,1.4c0,0.8,0.6,1.4,1.4,1.4c0.8,0,1.4-0.6,1.4-1.4C23.7,9,23.1,8.4,22.3,8.4z" />
+                  <path
+                    d="M16,10.2c-3.3,0-5.9,2.7-5.9,5.9s2.7,5.9,5.9,5.9s5.9-2.7,5.9-5.9S19.3,10.2,16,10.2z M16,19.9c-2.1,0-3.8-1.7-3.8-3.8   c0-2.1,1.7-3.8,3.8-3.8c2.1,0,3.8,1.7,3.8,3.8C19.8,18.2,18.1,19.9,16,19.9z" />
+                  <path
+                    d="M20.8,4h-9.5C7.2,4,4,7.2,4,11.2v9.5c0,4,3.2,7.2,7.2,7.2h9.5c4,0,7.2-3.2,7.2-7.2v-9.5C28,7.2,24.8,4,20.8,4z M25.7,20.8   c0,2.7-2.2,5-5,5h-9.5c-2.7,0-5-2.2-5-5v-9.5c0-2.7,2.2-5,5-5h9.5c2.7,0,5,2.2,5,5V20.8z" />
+                </g>
+              </svg>
+
+            </a>
+            <a href="https://wa.me/551140297707" target="_blank" aria-label="WhatsApp"
+              style="display: flex; align-items: center; justify-content: center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.705 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+            </a>
+            <a href="https://www.ifood.com.br/delivery/salto-sp/restaurante-caipirao-salto-centro/1bdcdcd2-3217-4611-88c1-5c55a49a6837"
+              target="_blank" aria-label="iFood" id="footerIFoodLink"><i data-lucide="utensils-crossed"
+                style="width:18px;height:18px;"></i></a>
           </div>
         </div>
         <div class="footer-col">
@@ -2153,9 +2875,9 @@
         </div>
         <div class="footer-col">
           <h4>Endereço</h4>
-          <p>Av. Dom Pedro II, 12</p>
-          <p>Centro — Salto/SP</p>
-          <p>CEP 13320-000</p>
+          <p id="footerAddrLine1">Av. Dom Pedro II, 12</p>
+          <p id="footerAddrLine2">Centro — Salto/SP</p>
+          <p id="footerAddrLine3">CEP 13320-000</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -2167,7 +2889,10 @@
 
   <!-- ===================== FLOATING BUTTONS ===================== -->
   <a href="https://wa.me/551140297707" class="whatsapp-float" aria-label="Falar no WhatsApp">
-    <i data-lucide="message-circle"></i>
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.705 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
   </a>
 
   <div class="mobile-order-fixed">
@@ -2181,7 +2906,14 @@
     if (window.lucide) { lucide.createIcons(); }
 
     // Loader
-    document.getElementById('loader').classList.add('hide');
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.classList.add('hide');
+        }
+      }, 1000);
+    });
 
     // Navbar scroll state
     const navbar = document.getElementById('navbar');
@@ -2218,6 +2950,24 @@
       });
     });
 
+    // ===== Toggle Cardápio Completo =====
+    const toggleMenuBtn = document.getElementById('toggleMenuBtn');
+    const extendedMenu = document.getElementById('extendedMenu');
+
+    toggleMenuBtn.addEventListener('click', () => {
+      const isExpanded = extendedMenu.classList.toggle('show');
+      if (isExpanded) {
+        toggleMenuBtn.innerHTML = `Ver menos <i data-lucide="chevron-up" style="width:16px;height:16px; transition: transform .25s ease;"></i>`;
+        extendedMenu.querySelectorAll('.reveal').forEach(el => {
+          el.classList.add('in');
+        });
+      } else {
+        toggleMenuBtn.innerHTML = `Ver cardápio completo <i data-lucide="chevron-down" style="width:16px;height:16px; transition: transform .25s ease;"></i>`;
+        document.getElementById('cardapio').scrollIntoView({ behavior: 'smooth' });
+      }
+      if (window.lucide) { lucide.createIcons(); }
+    });
+
     // Scroll reveal
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
@@ -2232,6 +2982,187 @@
       el.style.transitionDelay = `${(i % 6) * 60}ms`;
       observer.observe(el);
     });
+
+    // ===== Unit Switcher & Tray Logic =====
+    const unitsData = {
+      salto: {
+        name: "Salto (Centro)",
+        address: "Av. Dom Pedro II, 12 — Centro, Salto/SP",
+        addrLine1: "Av. Dom Pedro II, 12",
+        addrLine2: "Centro — Salto/SP",
+        addrLine3: "CEP 13320-000",
+        hours: "Segunda: Fechado<br>Terça: 11h às 15h<br>Quarta a Sexta: 11h às 15h e 18h às 22h<br>Sábado: 11h às 16h e 18h às 22h<br>Domingo: 11h às 17h",
+        hoursShort: "Ter a Dom · Horários Variados",
+        phone: "(11) 4029-7707",
+        whatsappUrl: "https://wa.me/551140297707",
+        mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.0125740417937!2d-47.286370423854746!3d-23.20077421876527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf50053ab5b0eb%3A0x8670bf7e3e2cd029!2sAv.%20Dom%20Pedro%20II%2C%2012%20-%20Centro%2C%20Salto%20-%20SP%2C%2013320-240!5e0!3m2!1spt-BR!2sbr!4v1719163200000",
+        ifoodUrl: "https://www.ifood.com.br/delivery/salto-sp/restaurante-caipirao-salto-centro/1bdcdcd2-3217-4611-88c1-5c55a49a6837"
+      },
+      indaiatuba: {
+        name: "Indaiatuba",
+        address: "Rua Martha Camargo Ifanger, 18 — Vila Homero, Indaiatuba/SP",
+        addrLine1: "Rua Martha Camargo Ifanger, 18",
+        addrLine2: "Vila Homero — Indaiatuba/SP",
+        addrLine3: "CEP 13338-076",
+        hours: "Segunda: Fechado<br>Terça a Sábado: 11h às 15h e 18h às 22h<br>Domingo: 11h às 17h",
+        hoursShort: "Ter a Dom · Horários Variados",
+        phone: "(19) 3885-5434",
+        whatsappUrl: "https://wa.me/551938855434",
+        mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.275334584288!2d-47.2185208!3d-23.0874558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8b36873523277%3A0x40ef03063f972b2c!2sRua%20Martha%20Camargo%20Ifanger%2C%2018%20-%20Vila%20Homero%2C%20Indaiatuba%20-%20SP%2C%2013338-076!5e0!3m2!1spt-BR!2sbr!4v1700000000000",
+        ifoodUrl: "https://www.ifood.com.br/delivery/salto-sp/restaurante-caipirao-centro/76800d02-4022-4a0b-8ec6-368297b4816c"
+      },
+      campinas: {
+        name: "Campinas",
+        address: "Av. Francisco Glicério, 1234 — Centro, Campinas/SP",
+        addrLine1: "Av. Francisco Glicério, 1234",
+        addrLine2: "Centro — Campinas/SP",
+        addrLine3: "CEP 13012-000",
+        hours: "Segunda: Fechado<br>Terça a Sábado: 11h às 15h e 18h às 22h<br>Domingo: 11h às 17h",
+        hoursShort: "Ter a Dom · Horários Variados",
+        phone: "(19) 3234-5678",
+        whatsappUrl: "https://wa.me/551932345678",
+        mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.2066378252277!2d-47.0616111!3d-22.9055556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8c8c50e2908f5%3A0x7d02a7b8e192ff8c!2sAv.%20Francisco%20Glic%C3%A9rio%20-%20Centro%2C%20Campinas%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000",
+        ifoodUrl: "https://www.ifood.com.br/delivery/campinas-sp/restaurante-caipirao-campinas-centro/96800d02-4022-4a0b-8ec6-368297b4816c"
+      }
+    };
+
+    // Tray Elements
+    const trayOverlay = document.getElementById('unitSelectorTray');
+    const trayTrigger = document.getElementById('unitSelectorTrigger');
+    const trayCloseBtn = document.getElementById('unitTrayCloseBtn');
+    const trayBackdrop = document.getElementById('unitTrayBackdrop');
+    const unitCards = document.querySelectorAll('.unit-card');
+    const selectedUnitLabel = document.getElementById('selectedUnitLabel');
+
+    function openTray() {
+      if (trayOverlay) trayOverlay.classList.add('active');
+      if (trayTrigger) trayTrigger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTray() {
+      if (trayOverlay) trayOverlay.classList.remove('active');
+      if (trayTrigger) trayTrigger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (trayTrigger) {
+      trayTrigger.addEventListener('click', openTray);
+    }
+    if (trayCloseBtn) {
+      trayCloseBtn.addEventListener('click', closeTray);
+    }
+    if (trayBackdrop) {
+      trayBackdrop.addEventListener('click', closeTray);
+    }
+
+    // Keyboard ESC to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && trayOverlay && trayOverlay.classList.contains('active')) {
+        closeTray();
+      }
+    });
+
+    // Card Selection
+    unitCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const unitKey = card.getAttribute('data-unit');
+
+        // Update active class on cards
+        unitCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+
+        // Update selected label in Navbar
+        if (selectedUnitLabel) {
+          selectedUnitLabel.textContent = unitsData[unitKey].name;
+        }
+
+        // Trigger updates with animations
+        updateUnitDetails(unitKey);
+
+        // Close modal tray
+        setTimeout(closeTray, 300);
+      });
+    });
+
+    function updateUnitDetails(unitKey) {
+      const data = unitsData[unitKey];
+      if (!data) return;
+
+      // Select elements to animate
+      const animElementsIds = [
+        'infoHours', 'infoLocal', 'infoPhone',
+        'locTitle', 'locAddress', 'locHours', 'locPhone',
+        'footerAddrLine1', 'footerAddrLine2', 'footerAddrLine3'
+      ];
+
+      const animElements = animElementsIds
+        .map(id => document.getElementById(id))
+        .filter(el => el !== null);
+
+      const mapIframe = document.getElementById('locMapIframe');
+      if (mapIframe) animElements.push(mapIframe);
+
+      // Add fade classes
+      animElements.forEach(el => {
+        el.classList.add('fade-transitionable');
+        el.classList.add('fade-updating');
+      });
+
+      // Update details after fade out
+      setTimeout(() => {
+        // Update Info Bar
+        const infoHours = document.getElementById('infoHours');
+        const infoLocal = document.getElementById('infoLocal');
+        const infoPhone = document.getElementById('infoPhone');
+        if (infoHours) infoHours.textContent = data.hoursShort;
+        if (infoLocal) {
+          if (unitKey === 'salto') infoLocal.textContent = 'Centro — Salto/SP';
+          else if (unitKey === 'indaiatuba') infoLocal.textContent = 'Vila Homero — Indaiatuba/SP';
+          else infoLocal.textContent = 'Centro — Campinas/SP';
+        }
+        if (infoPhone) infoPhone.textContent = data.phone;
+
+        // Update Location Section
+        const locTitle = document.getElementById('locTitle');
+        const locAddress = document.getElementById('locAddress');
+        const locHours = document.getElementById('locHours');
+        const locPhone = document.getElementById('locPhone');
+        if (locTitle) {
+          if (unitKey === 'salto') locTitle.textContent = 'Caipirão — Centro, Salto/SP';
+          else if (unitKey === 'indaiatuba') locTitle.textContent = 'Caipirão — Vila Homero, Indaiatuba/SP';
+          else locTitle.textContent = 'Caipirão — Centro, Campinas/SP';
+        }
+        if (locAddress) locAddress.textContent = data.address;
+        if (locHours) locHours.innerHTML = data.hours;
+        if (locPhone) locPhone.textContent = data.phone;
+        if (mapIframe) mapIframe.src = data.mapSrc;
+
+        // Update Footer elements
+        const footerAddrLine1 = document.getElementById('footerAddrLine1');
+        const footerAddrLine2 = document.getElementById('footerAddrLine2');
+        const footerAddrLine3 = document.getElementById('footerAddrLine3');
+        const footerIFoodLink = document.getElementById('footerIFoodLink');
+        if (footerAddrLine1) footerAddrLine1.textContent = data.addrLine1;
+        if (footerAddrLine2) footerAddrLine2.textContent = data.addrLine2;
+        if (footerAddrLine3) footerAddrLine3.textContent = data.addrLine3;
+        if (footerIFoodLink) footerIFoodLink.href = data.ifoodUrl;
+
+        // Update all WhatsApp links dynamically
+        const waLinks = document.querySelectorAll('a[href*="wa.me/"]');
+        waLinks.forEach(link => {
+          link.href = data.whatsappUrl;
+          if (link.textContent.includes('4029') || link.textContent.includes('3885') || link.textContent.includes('3234') || link.textContent.trim().startsWith('(')) {
+            link.textContent = data.phone;
+          }
+        });
+
+        // Fade in
+        animElements.forEach(el => {
+          el.classList.remove('fade-updating');
+        });
+      }, 250);
+    }
   </script>
 
 </body>
